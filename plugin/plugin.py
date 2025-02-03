@@ -57,11 +57,11 @@ class Plugin(AAPlugin):
         except ldap.INVALID_CREDENTIALS:
             self.logger.error("Bad bind_username or bind_password")
             return self.connection.gateway_username
-        search_result = conn.search_s("DC=pam,DC=demo", ldap.SCOPE_SUBTREE , f"({lookup_attribute}={username})", ['samaccountname'])
+        search_result = conn.search_s(f"{plugin_base}", ldap.SCOPE_SUBTREE , f"({lookup_attribute}={username})", ['samaccountname'])
         try:
             return str(search_result[0][1]['sAMAccountName'][0], encoding='utf-8')
         except: TypeError:
-            self.logger.error("LDAP search did not return any result."))
+            self.logger.error("LDAP search did not return any result.")
             return self.connection.gateway_username
         
     @cookie_property

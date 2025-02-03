@@ -48,7 +48,6 @@ class Plugin(AAPlugin):
         lookup_attribute = self.plugin_configuration.get(PLUGIN_SECTION, 'lookup_attribute')
         bind_user = self.plugin_configuration.get(PLUGIN_SECTION, 'bind_user')
         bind_password = self.plugin_configuration.get(PLUGIN_SECTION, 'bind_password')
-        search_base = self.plugin_configuration.get(PLUGIN_SECTION, 'search_base')
         if not all([domain_controller, lookup_attribute, search_base, bind_username, bind_password]):
             self.logger.error("The following configuration items must be set: domain_controller, lookup_attribute, bind_user, bind_password")
         try:

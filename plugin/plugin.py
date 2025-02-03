@@ -74,7 +74,7 @@ class Plugin(AAPlugin):
         if self.spp_auth_provider.lower() == 'starling':
             return self.username
         if self.plugin_configuration.getboolean(PLUGIN_SECTION,'lookup_from_ldap_property', False):
-            return _lookup_gateway_user_from_ldap_property()
+            return self._lookup_gateway_user_from_ldap_property()
         return username
 
     @cookie_property

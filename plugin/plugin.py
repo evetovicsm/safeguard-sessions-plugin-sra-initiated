@@ -60,7 +60,7 @@ class Plugin(AAPlugin):
         search_result = conn.search_s(f"{plugin_base}", ldap.SCOPE_SUBTREE , f"({lookup_attribute}={username})", ['samaccountname'])
         try:
             return str(search_result[0][1]['sAMAccountName'][0], encoding='utf-8')
-        except: TypeError:
+        except TypeError:
             self.logger.error("LDAP search did not return any result.")
             return self.connection.gateway_username
         

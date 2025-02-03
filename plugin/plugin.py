@@ -60,7 +60,7 @@ class Plugin(AAPlugin):
         except ldap.INVALID_CREDENTIALS:
             self.logger.error("Bad bind_username or bind_password")
             return self.connection.gateway_username
-        search_result = conn.search_s(f"{search_base}", ldap.SCOPE_SUBTREE , f"({lookup_attribute}={username})", ['samaccountname'])
+        search_result = conn.search_s(f"{search_base}", ldap.SCOPE_SUBTREE , f"({lookup_attribute}={self.connection.gateway_username})", ['samaccountname'])
         try:
             return str(search_result[0][1]['sAMAccountName'][0], encoding='utf-8')
         except TypeError:

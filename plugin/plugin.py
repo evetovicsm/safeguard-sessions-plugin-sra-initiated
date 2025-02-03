@@ -51,13 +51,16 @@ class Plugin(AAPlugin):
         if not all([domain_controller, lookup_attribute, search_base, bind_user, bind_password]):
             self.logger.error("The following configuration items must be set: domain_controller, lookup_attribute, bind_user, bind_password")
         try:
-            conn = ldap.initialize(f"ldap://{{domain_controller}}")
+            conn = ldap.initialize(f"ldap://{domain_controller}")
             conn.set_option(ldap.OPT_REFERRALS, 0)
             conn.simple_bind_s(bind_user, bind_password)
+        except ldap.SERVER_DOWN:
+            self.logger.error(f"Coud not connect to LDAP server {domain_controller}")
+            return self.connection.gateway_username
         except ldap.INVALID_CREDENTIALS:
             self.logger.error("Bad bind_username or bind_password")
             return self.connection.gateway_username
-        search_result = conn.search_s(f"{plugin_base}", ldap.SCOPE_SUBTREE , f"({lookup_attribute}={username})", ['samaccountname'])
+        search_result = conn.search_s(f"{search_base}", ldap.SCOPE_SUBTREE , f"({lookup_attribute}={username})", ['samaccountname'])
         try:
             return str(search_result[0][1]['sAMAccountName'][0], encoding='utf-8')
         except TypeError:
